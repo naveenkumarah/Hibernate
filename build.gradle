@@ -21,6 +21,10 @@ dependencies {
     //testCompile 'org.mockito:mockito-core:1.+'
     // http://mvnrepository.com/artifact/org.hibernate/hibernate-gradle-plugin
 	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.1.0.Final'
+	// http://mvnrepository.com/artifact/mysql/mysql-connector-java
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
+
+	
 
     
 }
