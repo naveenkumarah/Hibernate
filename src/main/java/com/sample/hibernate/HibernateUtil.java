@@ -73,7 +73,7 @@ public class HibernateUtil {
         props.put("hibernate.current_session_context_class", "thread");
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.format_sql", "true");
-       // props.put("hibernate.hbm2ddl.auto", "create");
+        props.put("hibernate.hbm2ddl.auto", "create");
         
         
         
@@ -83,6 +83,13 @@ public class HibernateUtil {
         //addClass(Employee1.class) will look for resource
         // com/journaldev/hibernate/model/Employee1.hbm.xml (not good)
         configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Transact.class);
+        configuration.addAnnotatedClass(Customer.class);
+        configuration.addAnnotatedClass(Cart.class);
+        configuration.addAnnotatedClass(Items.class);
+        configuration.addAnnotatedClass(Item.class);
+        configuration.addAnnotatedClass(Kart.class);
+        
          
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         System.out.println("Hibernate Java Config serviceRegistry created");
@@ -97,12 +104,12 @@ public class HibernateUtil {
         }
     }
      
-    public static SessionFactory getSessionFactory() {
+    private static SessionFactory getSessionFactory() {
         if(sessionFactory == null) sessionFactory = buildSessionFactory();
         return sessionFactory;
     }
      
-    public static SessionFactory getSessionAnnotationFactory() {
+    private static SessionFactory getSessionAnnotationFactory() {
         if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
         return sessionAnnotationFactory;
     }
