@@ -23,7 +23,10 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.1.0.Final'
 	// http://mvnrepository.com/artifact/mysql/mysql-connector-java
 	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
-
+	testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
+    testCompile group: 'dbunit', name: 'dbunit', version:'2.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version:'2.5'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.5'
 	
 
     
