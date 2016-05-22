@@ -27,7 +27,10 @@ dependencies {
     testCompile group: 'dbunit', name: 'dbunit', version:'2.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version:'2.5'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.5'
-	
+	//compile group: 'org.ehcache', name: 'ehcache', version:'3.0.1'
+	compile group: 'javax.cache', name: 'cache-api', version:'1.0.0'
+    // http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache
+	compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.1.0.Final'
 
     
 }

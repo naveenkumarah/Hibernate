@@ -6,59 +6,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
  
-    //XML based configuration
-    private static SessionFactory sessionFactory;
-     
-    //Annotation based configuration
-    private static SessionFactory sessionAnnotationFactory;
-     
+	static final  Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
+
     //Property based configuration
     private static SessionFactory sessionJavaConfigFactory;
  
-    private static SessionFactory buildSessionFactory() {
-        try {
-            // Create the SessionFactory from hibernate.cfg.xml
-            Configuration configuration = new Configuration();
-            configuration.configure("hibernate.cfg.xml");
-            System.out.println("Hibernate Configuration loaded");
-             
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-            System.out.println("Hibernate serviceRegistry created");
-             
-            SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-             
-            return sessionFactory;
-        }
-        catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
  
-    private static SessionFactory buildSessionAnnotationFactory() {
-        try {
-            // Create the SessionFactory from hibernate.cfg.xml
-            Configuration configuration = new Configuration();
-            configuration.configure("hibernate-annotation.cfg.xml");
-            System.out.println("Hibernate Annotation Configuration loaded");
-             
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-            System.out.println("Hibernate Annotation serviceRegistry created");
-             
-            SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-             
-            return sessionFactory;
-        }
-        catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
  
     private static SessionFactory buildSessionJavaConfigFactory() {
         try {
@@ -74,8 +32,10 @@ public class HibernateUtil {
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.format_sql", "true");
         props.put("hibernate.hbm2ddl.auto", "create");
-        
-        
+        props.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        props.put("hibernate.cache.use_second_level_cache", "true");
+        props.put("hibernate.cache.use_query_cache", "true");
+        props.put("net.sf.ehcache.configurationResourceName", "/myehcache.xml");
         
         configuration.setProperties(props);
          
@@ -92,30 +52,22 @@ public class HibernateUtil {
         
          
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-        System.out.println("Hibernate Java Config serviceRegistry created");
+        logger.info("Hibernate Java Config serviceRegistry created");
          
         SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
          
         return sessionFactory;
         }
         catch (Throwable ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
+        	logger.error("Initial SessionFactory creation failed." + ex,ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
-     
-    private static SessionFactory getSessionFactory() {
-        if(sessionFactory == null) sessionFactory = buildSessionFactory();
-        return sessionFactory;
-    }
-     
-    private static SessionFactory getSessionAnnotationFactory() {
-        if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
-        return sessionAnnotationFactory;
-    }
-     
+    
     public static SessionFactory getSessionJavaConfigFactory() {
-        if(sessionJavaConfigFactory == null) sessionJavaConfigFactory = buildSessionJavaConfigFactory();
+        if(sessionJavaConfigFactory == null){
+        	sessionJavaConfigFactory = buildSessionJavaConfigFactory();
+        }
         return sessionJavaConfigFactory;
     }
      
